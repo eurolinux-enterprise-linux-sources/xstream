@@ -36,13 +36,16 @@
 
 Name:           xstream
 Version:        1.3.1
-Release:        8%{?dist}
+Release:        10%{?dist}
 Summary:        Java XML serialization library
 
 Group:          Development/Libraries
 License:        BSD
 URL:            http://xstream.codehaus.org/
 Source0:        http://repository.codehaus.org/com/thoughtworks/%{name}/%{name}-distribution/%{version}/%{name}-distribution-%{version}-src.zip
+
+# Backported from upstream revision 2210
+Patch0:         %{name}-CVE-2013-7285.patch
 
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
@@ -104,6 +107,7 @@ Requires:       jpackage-utils
 
 %prep
 %setup -qn %{name}-%{version}
+%patch0 -p1
 find . -name "*.jar" -delete
 
 %if %with test
@@ -190,6 +194,13 @@ install -pm 644 xstream/pom.xml \
 
 
 %changelog
+* Tue Feb 11 2014 Mikolaj Izdebski <mizdebsk@redhat.com> - 1.3.1-10
+- Apply upstream security patch
+- Resolves: CVE-2013-7285
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1.3.1-9
+- Mass rebuild 2013-12-27
+
 * Wed Sep 25 2013 Mikolaj Izdebski <mizdebsk@redhat.com> - 1.3.1-8
 - Disable support for XOM
 
